@@ -1,15 +1,14 @@
 const dscc = require('@google/dscc');
-// const viz = require('@google/dscc-scripts/viz/initialViz.js');
 const local = require('./localMessage.js');
 
 // change this to 'true' for local development
 // change this to 'false' before deploying
 export const LOCAL = false;
 
-// write viz code here
-// const drawViz = (data) => {
-//   viz.firstViz(data);
-// };
+// create a title element
+var titleElement = document.createElement('div');
+titleElement.id = 'myVizTitle';
+document.body.appendChild(titleElement);
 
 const drawViz = (data) => {
     let rowData = data.tables.DEFAULT;
@@ -19,6 +18,10 @@ const drawViz = (data) => {
     const padding = { top: 15, bottom: 15 };
     const height = dscc.getHeight() - margin.top - margin.bottom;
     const width = dscc.getWidth() - margin.left - margin.right;
+
+    const fillColor =  data.style.barColor.value
+          ? data.style.barColor.value.color
+          : data.style.barColor.defaultValue;
 
     // remove the svg if it already exists
     if (document.querySelector("svg")) {
@@ -30,21 +33,17 @@ const drawViz = (data) => {
     svg.setAttribute("height", `${height}px`);
     svg.setAttribute("width", `${width}px`);
 
-    const fillColor =  data.style.barColor.value
-          ? data.style.barColor.value.color
-          : data.style.barColor.defaultValue;
-
     const maxBarHeight = height - padding.top - padding.bottom;
     const barWidth = width / (rowData.length * 2);
 
     // obtain the maximum bar metric value for scaling purposes
     let largestMetric = 0;
 
-    rowData.forEach(function(row) {
+    rowData.forEach(function (row) {
         largestMetric = Math.max(largestMetric, row["barMetric"][0]);
     });
 
-    rowData.forEach(function(row, i) {
+    rowData.forEach(function (row, i) {
         // 'barDimension' and 'barMetric' come from the id defined in myViz.json
         // 'dimId' is Data Studio's unique field ID, used for the filter interaction
         const barData = {
@@ -68,6 +67,7 @@ const drawViz = (data) => {
         rect.setAttribute("width", barWidth);
         rect.setAttribute("height", barHeight);
         rect.setAttribute("data", JSON.stringify(barData));
+        // use style selector from Data Studio
         rect.style.fill = fillColor;
         svg.appendChild(rect);
 
@@ -85,6 +85,11 @@ const drawViz = (data) => {
     });
 
     document.body.appendChild(svg);
+
+    // Get the human-readable name of the metric and dimension
+    var metricName = data.fields['barMetric'][0].name;
+    var dimensionName = data.fields['barDimension'][0].name;
+    titleElement.innerText = metricName + ' by ' + dimensionName;
 };
 
 
