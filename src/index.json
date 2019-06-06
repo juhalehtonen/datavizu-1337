@@ -5,8 +5,8 @@
       "label": "Concepts",
       "elements": [
         {
-          "id": "dimID",
-          "label": "A dimension",
+          "id": "barDimension",
+          "label": "Dimension",
           "type": "DIMENSION",
           "options": {
             "min": 1,
@@ -14,8 +14,8 @@
           }
         },
         {
-          "id": "metricID",
-          "label": "A metric",
+          "id": "barMetric",
+          "label": "Metric",
           "type": "METRIC",
           "options": {
             "min": 1,
@@ -25,5 +25,18 @@
       ]
     }
   ],
-  "style": [ ]
+  "style": [
+    {
+      "id": "color",
+      "label": "Colors",
+      "elements": [
+        {
+          "type": "FONT_COLOR",
+          "id": "barColor",
+          "label": "Bar Color",
+          "defaultValue": "black"
+        }
+      ]
+    }
+  ]
 }
