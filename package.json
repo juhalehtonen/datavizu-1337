@@ -1,7 +1,7 @@
 {
   "dsccViz": {
     "gcsDevBucket": "gs://datavizu-1337",
-    "gcsProdBucket": "gs://datavizu-1337",
+    "gcsProdBucket": "gs://datavizu-1338",
     "jsFile": "index.js",
     "jsonFile": "index.json",
     "cssFile": "index.css",
